@@ -1,0 +1,13 @@
+File structure:
+files needed for model:
+main: nerve cell is created, simulation is run and results are saved
+run: example how to run the model
+defineCell: functions that are needed in main for the creation of the cell
+dataProcessing: functions for data processing: getFilename, getData and calculateLatency
+stimulationProtocols: definition of several frequently used stimulation protocols
+
+files for optimization:
+particleSwarm2, particleSwarm2GEPSO, particleSwarm2RPSO: different implementations of the particle swarm optimization
+evaluate: functions for the evaluation of the particles
+
+plot: functions for plotting
