@@ -1,3 +1,10 @@
+Computational Model of a C-fiber
+
+This computational model simulates the biophysical properties of C-fibers, a class of unmyelinated sensory nerve fibers 
+involved in pain perception. The model incorporates detailed ion channel dynamics, including sodium and potassium channels.
+It was translated to Python and adapted to run on a high performance cluster. 
+
+
 File structure:
 files needed for model:
 main: nerve cell is created, simulation is run and results are saved
