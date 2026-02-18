@@ -71,10 +71,19 @@ INITIAL {
 
 BREAKPOINT {
 
-:	kvotqt = 2.1^((celsiusT-22)/10)
-	kvotqt = 1^((celsiusT-22)/10)
-
-	ikpump = smalla/((1+b1/ko)^2) * (1.62/(1+(6.7(mM)/(nai+8(mM)))^3) + 1.0/(1+(67.6(mM)/(nai+8(mM)))^3))
+	kvotqt = 1.8^((celsiusT-22)/10)
+	:kvotqt = 1^((celsiusT-22)/10)
+	
+	ikpump = (smalla/((1+b1/ko)^2)) * (1.62/(1+(6.7(mM)/(nai+8(mM)))^3) + 1.0/(1+(67.6(mM)/(nai+8(mM)))^3))
+	
+	:ikpump = smalla/((1+b1/ko)^2) * (1.62/(1+(10.7(mM)/(nai+8(mM)))^3) + 1.0/(1+(67.6(mM)/(nai+8(mM)))^3))*1.11
+	:ikpump = smalla/((1+b1/ko)^2) * (1.62/(1+(20.7(mM)/(nai+8(mM)))^3) + 1.0/(1+(67.6(mM)/(nai+8(mM)))^3))*2.017
+	:ikpump = smalla/((1+b1/ko)^2) * (1.62/(1+(7.7(mM)/(nai+8(mM)))^3) + 1.0/(1+(67.6(mM)/(nai+8(mM)))^3))*1.0185
+	
+	:ikpump = smalla/((1+b1/ko)^2) * (1.62/(1+(12.7(mM)/(nai+8(mM)))^3) + 1.0/(1+(67.6(mM)/(nai+8(mM)))^3))
+	
+	:ikpump = (smalla/(1+b1/ko)^2) * (1.62/(1+(20(mM)/(nai+8))^3) + 1.0/(1+(15(mM)/(nai+8))^3))
+	
 	ikpump = ikpump*kvotqt
 	inapump = -1.5*ikpump
 

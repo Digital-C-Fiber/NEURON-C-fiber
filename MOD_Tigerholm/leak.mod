@@ -34,14 +34,20 @@ ASSIGNED {
 
 BREAKPOINT {
 
-	ik = gkleak*(v-ek)
-	ina = gnaleak*(v-ena)
+	:ik = gkleak*(v-ek)
+	:ina = gnaleak*(v-ena)
+	
+	ik = gkleak
+	ina = gnaleak
 
 }
 
 
 INITIAL {
-	ik = gkleak*(v-ek)
-	ina = gnaleak*(v-ena)
+	:ik = gkleak*(v-ek)
+	:ina = gnaleak*(v-ena)
+	
+	ik = gkleak
+	ina = gnaleak
 }
 

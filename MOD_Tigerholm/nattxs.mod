@@ -4,7 +4,7 @@
 NEURON {
        SUFFIX nattxs
        USEION na READ ena WRITE ina
-       RANGE gbar, ena, ina, celsiusT, Tshift
+       RANGE gbar, ena, ina, celsiusT, Tshift, naoinf, nao
 
 }
 
@@ -46,8 +46,10 @@ PARAMETER {
   C_bs = 28.5 (mV) : -11.998 (mV)
 
   shift=0 (mV) :10
-  Tshift=0 (mV)
 
+  :Tshift = 0 (mV)
+  naoinf = 154.0  (mM)
+  nao		(mM)
 }
 
 ASSIGNED {
@@ -60,7 +62,8 @@ ASSIGNED {
 	 minf
 	 hinf
 	 sinf
-         ena	(mV)
+     ena	(mV)
+	 Tshift (mV)
          
 }
 
@@ -73,13 +76,18 @@ BREAKPOINT {
 }
 
 INITIAL {
+	:Tshift = 20 * (nao-naoinf)/naoinf
+	Tshift=0
+	
 	rates(v) : set tau_m, tau_h, hinf, minf
 	: assume that equilibrium has been reached
 	
+	
 
-        m = minf
+    m = minf
 	h = hinf
 	s = sinf
+	
 }
 
 DERIVATIVE states {

@@ -20,8 +20,8 @@ PARAMETER {
 	gbar 	(S/cm2) 
         
         lj=0 	(mV):not known 
-        vhm=-5.4	(mV)
-        vhh=-49.9 	(mV)
+        :vhm=-5.4-30	(mV)
+        :vhh=-49.9-10 	(mV)
         km=16.4	(mV)
         kh=4.6	(mV)        
 
@@ -36,10 +36,13 @@ ASSIGNED {
 	ik	(mA/cm2)
 	g	(S/cm2)
 	tau_m	(ms)
-        tau_h   (ms)
-        minf
-        hinf
-        ek	(mV)
+	tau_h   (ms)
+	minf
+	hinf
+	ek	(mV)
+	
+	vhm	(mV)
+	vhh	(mV)
 }
 
 STATE { h m }
@@ -52,9 +55,11 @@ BREAKPOINT {
 
 INITIAL {
 	: assume that equilibrium has been reached
-         
+     vhm=-5.4
+     vhh=-49.9
+		
 	 m=(1/(1+exp(-(1/km)*(v-vhm+lj+shift))))^4
-         h=1/(1+exp((1/kh)*(v-vhh+lj+shift)))
+     h=1/(1+exp((1/kh)*(v-vhh+lj+shift)))
 
 
 }
