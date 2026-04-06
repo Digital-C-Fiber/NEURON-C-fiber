@@ -47,7 +47,7 @@ def setTemp(axon, tempCelsius):
         seg.nakpump.celsiusT = tempCelsius
         seg.kdr.celsiusT = tempCelsius#Tigerholm
         #seg.kdrTiger.celsiusT = tempCelsius#Grill
-    h.celsiusT_nav1p8_noise4 = tempCelsius
+    h.celsiusT_nav1p8_noise1000 = tempCelsius
 
 #calculates the maximum conductances of the sodium and potassium leak (balancing) currents to achieve their target rest potential (Grill)
 def balance(axon, Vrest):
