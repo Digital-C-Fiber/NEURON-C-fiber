@@ -1,3 +1,6 @@
+##
+Forked to work on CES master seminar in Spring 2026 to test whether Ribeiro's experiments about Long-COVID
+patients' nociceptors can be replicated in simulations with the C-fiber model.
 # Computational Model of a C-fiber
 
 This computational model simulates the biophysical properties of C-fibers, a class of unmyelinated sensory nerve fibers 

@@ -17,11 +17,9 @@ from itertools import zip_longest
 #gNav18: conductance of Nav 1.8
 #dt: step size in time, if set to zero, CVode is activated
 #previousStim: sets a pre stimulation before the regular stimulation protocol, if the protocol is loaded from file
-def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, tempBranch=32, tempParent=37,
-        gPump=-0.00485891709589456, gNav17=0.33198932295899997, gNav17Parent=0.22831806252579703,
-        gNav18=0.04520936848183172, gNav18Parent=0.2411879110860178, gNav19=0.0032208034421239012,
-        gKs=0.0030962055552702606, gKf=0.025994684685553986, gH=0.009167424690232623, gKdr=0.013875365047132446,
-        gKna=0.0014444412024341238,vRest=-55,
+def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, tempBranch=32, tempParent=37, 
+        gPump=-0.0025, gNav17=0.24686453257354574, gNav17Parent=0.13115152763095123, gNav18=0.37673567973121774, gNav18Parent=0.23439203005798895, gNav19=0.00017254238997420438, 
+        gKs=0.008865226128662577, gKf=0.02709394494148292, gH=0.014140202887083592, gKdr=0.008469950837206652, gKna=0.001398204170298818,vRest=-50,
         sine=False, ampSine=0.1, particleNr=0):
     
     #start timer
@@ -29,10 +27,10 @@ def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, temp
     
     #what do you want to save?
     savePotential=True
-    saveCurrents=False
-    saveGating=False
+    saveCurrents=True
+    saveGating=True
     saveSpikes=True
-    saveConcentrations=False
+    saveConcentrations=True
     saveStimulation=True
     saveParameters=True
 
@@ -43,10 +41,7 @@ def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, temp
 
     if saveParameters:
         #save parameter values
-        fileParams = str(path)+'/params'+ dataProcessing.getFileSuffix(prot, scalingFactor, tempBranch, tempParent,
-                gPump, gNav17, gNav17Parent, gNav18, gNav18Parent, gNav19,
-               gKs, gKf, gH, gKdr, gKna, vRest,
-               sine, ampSine, particleNr)
+        fileParams = str(path)+'/params'+'_Prot'+str(prot)+'.csv'
         #if file does not exist, create it
         #if not os.path.isfile(fileParams):
         with open(fileParams,'w', newline='') as f:
@@ -419,7 +414,6 @@ def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, temp
       
     
     #fileSuffix="_particle"+str(particleNr)+".csv"
-
     '''
     if savePotential:
         filename = str(path)+'/potential'+fileSuffix
@@ -427,8 +421,7 @@ def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, temp
         #creates file, deletes content, if file already exists
         with open(filename,'w', newline='') as f:
             csv.writer(f).writerow(["Time", "Axon 1 0", "Axon 1 0.25", "Axon 1 0.5", "Axon 1 0.75", "Axon 1 1", "Axon 3 0", "Axon 3 0.25", "Axon 3 0.5","Axon 3 0.75","Axon 3 1"])
-    '''
-    '''
+    
     if saveConcentrations:
         filenameConc = str(path)+'/concentrations'+fileSuffix
         #creates file, deletes content, if file already exists
@@ -445,15 +438,6 @@ def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, temp
             for stimTime in vec:
                 csv.writer(f).writerow([stimTime])
         #print("saved stim, path: ", fileStim)
-
-    if savePotential:
-        #Parent
-        #save membrane potential
-        filename = str(path)+'/potential_parent'+fileSuffix
-
-        #creates file, deletes content, if file already exists
-        with open(filename,'w', newline='') as f:
-            csv.writer(f).writerow(["Time", "Potential"])
     
     #start simulation
     tstop = delay
@@ -464,15 +448,15 @@ def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, temp
     while(h.t<tstop):
         #save data
         if h.t >= t2:
-
+            '''
             #save membrane potential
-            #with open(filename,'a', newline='') as f:
-            #    csv.writer(f).writerow([h.t, axon[1](0).v, axon[1](0.25).v, axon[1](0.5).v, axon[1](0.75).v, axon[1](1).v, axon[3](0).v, axon[3](0.25).v, axon[3](0.5).v, axon[3](0.75).v, axon[3](1).v])
+            with open(filename,'a', newline='') as f:
+                csv.writer(f).writerow([h.t, axon[1](0).v, axon[1](0.25).v, axon[1](0.5).v, axon[1](0.75).v, axon[1](1).v, axon[3](0).v, axon[3](0.25).v, axon[3](0.5).v, axon[3](0.75).v, axon[3](1).v])
                 
             #save concentrations
-            #with open(filenameConc,'a', newline='') as f:
-            #    csv.writer(f).writerow([h.t, axon[3](1).nai, axon[3](1).ki, axon[3](1).nao, axon[3](1).ko, axon[3](1).ena, axon[3](1).ek])
-
+            with open(filenameConc,'a', newline='') as f:
+                csv.writer(f).writerow([h.t, axon[3](1).nai, axon[3](1).ki, axon[3](1).nao, axon[3](1).ko, axon[3](1).ena, axon[3](1).ek])
+            '''
             t2=h.t+300
             j=j+1
             if j>=10:

@@ -4,11 +4,12 @@ import numpy as np
 import pandas as pd
 from ast import literal_eval
 import dataProcessing
-import seaborn as sns
+#import seaborn as sns
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 import matplotlib
-    
+
+
 
 def plotLatency(data_aps, data_stim, norm=False, title="Latency"):
     l = dataProcessing.calculateLatency(data_aps, data_stim, norm)
