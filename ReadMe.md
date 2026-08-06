@@ -10,7 +10,7 @@ It was translated to Python and adapted to run on a high-performance computing c
 
 ## Installation and Usage:
 1. Install NEURON: 
-  Follow the official installation guide: https://www.neuron.yale.edu/neuron/
+  Follow the official installation guide: https://www.neuronsimulator.org/en/9.0.1/
 2. Compile mod-files:
   Navigate to the MOD_Tigerholm folder and compile the mod files: nrnivmodl MOD_Tigerholm
 3. Run the Model 
