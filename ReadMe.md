@@ -1,3 +1,46 @@
+# Modified C-fiber Model with Multi-state Sodium Channel Fast Inactivation
+
+This branch extends the original NEURON C-fiber model by modifying the fast
+inactivation dynamics of the voltage-gated sodium channels Nav1.7, Nav1.8,
+and Nav1.3.
+
+The original activation and slow-inactivation mechanisms are retained.
+Fast inactivation is represented by a multi-state waiting-state model based
+on the sodium-channel formulation described by Köster et al. (2025):
+
+h0 -> h1 -> hw1 -> hw2 -> hw3 -> hw4 -> hw5 -> h0
+
+The effective channel availability is calculated as:
+
+h_eff = 1 - h0
+
+For each modified sodium channel, the current-producing mechanism and the
+fast-inactivation mechanism are implemented separately. The inactivation
+state is passed to the current mechanism using a NEURON POINTER.
+
+## Main Modifications
+### Model Files:
+- `nattxs.mod` and `nattxs_h.mod`: modified Nav1.7 fast inactivation
+- `DNav18.mod` and `DNav18_h.mod`: modified Nav1.8 fast inactivation
+- `nav13.mod` and `nav13_h.mod`: modified Nav1.3 fast inactivation
+- `defineCell.py`: inserts the additional inactivation mechanisms and connects
+  them to the corresponding sodium-channel mechanisms
+
+### Plotting:
+- `plot.py`: compares ADS and recovery-cycle results between the original and modified models
+- `plot_cycle.py`: compares recovery cycles at different baseline frequencies
+
+
+
+
+
+
+
+
+
+---
+The following describes the original C-fiber model on which this branch is based.
+
 # Computational Model of a C-fiber
 
 This computational model simulates the biophysical properties of C-fibers, a class of unmyelinated sensory nerve fibers 
@@ -10,7 +53,7 @@ It was translated to Python and adapted to run on a high-performance computing c
 
 ## Installation and Usage:
 1. Install NEURON: 
-  Follow the official installation guide: https://www.neuronsimulator.org/en/9.0.1/
+  Follow the official installation guide: https://www.neuron.yale.edu/neuron/
 2. Compile mod-files:
   Navigate to the MOD_Tigerholm folder and compile the mod files: nrnivmodl MOD_Tigerholm
 3. Run the Model 
