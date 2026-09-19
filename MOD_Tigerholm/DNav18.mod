@@ -5,7 +5,10 @@
 NEURON {
 	SUFFIX nav1p8
 	USEION na READ ena WRITE ina
- 	RANGE gbar, ena, ina
+ 	RANGE gbar, ena, ina,  celsiusT
+	RANGE h_eff
+
+	POINTER h0_source
 }
 
 UNITS {
@@ -26,24 +29,26 @@ ASSIGNED {
 	v	(mV) : NEURON provides this
 	ina	(mA/cm2)
 	g	(S/cm2)
-	tau_h	(ms)
+	
    	tau_m	(ms)
 	tau_s	(ms)
 	tau_u	(ms)
 	minf
-	hinf
 	sinf
 	uinf
         ena    	(mV)
         am
         bm
+	h_eff
+	h0_source
 }
 
-STATE { m h s u }
+STATE { m s u }
 
 BREAKPOINT {
 	SOLVE states METHOD cnexp	
-	g = gbar * m^3* h * s * u
+	h_eff = 1 - h0_source
+	g = gbar * m^3* h_eff * s * u
 	ina = g * (v-ena)
 }
 
@@ -51,43 +56,48 @@ INITIAL {
 	: assume that equilibrium has been reached
         rates(v)
         m=minf
-        h=hinf
         s=sinf
         u=uinf
-    	
 
+    	h_eff = 1 - h0_source
 }
 
 DERIVATIVE states {
 	rates(v)
 	m' = (minf - m)/tau_m
-	h' = (hinf - h)/tau_h
 	s' = (sinf - s)/tau_s
 	u' = (uinf - u)/tau_u
 }
 
+
+
 FUNCTION rates(Vm (mV)) {
         
-        am= 2.85-(2.839)/(1+exp((Vm-1.159)/13.95))
-        bm= (7.6205)/(1+exp((Vm+46.463)/8.8289))
+    am= 2.85-(2.839)/(1+exp((Vm-1.159)/13.95))
+	
+    bm= (7.6205)/(1+exp((Vm+46.463)/8.8289))
+	
+    :am = alpham(Vm)
+	:bm = betam(Vm)
+
+
 	tau_m = 1/(am+bm)
 	minf = am/(am+bm)
         
-        hinf= 1/(1+exp((Vm+32.2)/4))  
-        tau_h=(1.218+42.043*exp(-((Vm+38.1)^2)/(2*15.19^2)))
 	
 	tau_s = 1/(alphas(Vm) + betas(Vm))			
-        sinf = 1/(1 + exp((Vm + 45)/8(mV)))	 	
+    sinf = 1/(1 + exp((Vm + 45)/8(mV)))	 	
  	tau_u = 1/(alphau(Vm) + betau(Vm))	
 	uinf = 1/(1 + exp((Vm + 51)/8(mV)))
 
 
 	kvot_qt=1/((2.5^((celsiusT-22)/10)))
         tau_m=tau_m*kvot_qt
-        tau_h=tau_h*kvot_qt
         tau_s=tau_s*kvot_qt
         tau_u=tau_u*kvot_qt
 }
+
+
 
 
 FUNCTION alphas(Vm (mV)) (/ms) {
@@ -105,6 +115,5 @@ FUNCTION betas(Vm (mV)) (/ms) {
 FUNCTION betau(Vm (mV)) (/ms) {
 	betau= 0.0002(/ms)*1.9952/(1 + exp(-(Vm + 30.963)/14.792(mV)))
 }
-
 
 
