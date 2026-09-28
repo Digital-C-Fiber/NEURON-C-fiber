@@ -5,7 +5,7 @@
 NEURON {
 	SUFFIX nav1p8
 	USEION na READ ena WRITE ina
- 	RANGE gbar, ena, ina
+ 	RANGE gbar, ena, ina, celsiusT
 }
 
 UNITS {
@@ -82,7 +82,9 @@ FUNCTION rates(Vm (mV)) {
 	uinf = 1/(1 + exp((Vm + 51)/8(mV)))
 
 
-	kvot_qt=1/((2.5^((celsiusT-22)/10)))
+	:kvot_qt=1/((2.5^((celsiusT-22)/10))):2Hz blocks
+    :kvot_qt=1/((2.5^((celsiusT-20)/10))):2Hz blocks
+    kvot_qt=1/((2.5^((celsiusT-18)/10)))
         tau_m=tau_m*kvot_qt
         tau_h=tau_h*kvot_qt
         tau_s=tau_s*kvot_qt

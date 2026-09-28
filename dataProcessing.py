@@ -91,7 +91,7 @@ def calculateLatency(data_aps, data_stim, norm=True):
             point = data_aps["Axon 3 1"][j]-data_stim["StimTime"][i]
             #print(point)
             if not np.isnan(point):
-                if point>0 and point < 250:#normal AP
+                if point>0 and point < 550:#normal AP
                     l[k][0]=data_stim["StimTime"][i]/1000
                     l[k][1]=point
                     j=j+1
@@ -99,7 +99,7 @@ def calculateLatency(data_aps, data_stim, norm=True):
                     k=k+1
                 elif point <0:#AP belongs to next stimulation pulse
                     j=j+1
-                elif point>250:#AP does not exist
+                elif point>550:#AP does not exist
                     l[k][0]=data_stim["StimTime"][i]/1000
                     l[k][1]=float('Nan')
                     i=i+1
@@ -209,7 +209,7 @@ def getRealData(filename):
     data2 = pd.read_excel(filename, index_col=None, header=4)  
 
     data2 =data2.drop(1)
-    data2 =data2.drop(labels="fiber id",axis=1)
+    data2 =data2.drop("fiber id",1)
 
     CM=[]
     CMi=[]
@@ -248,7 +248,7 @@ def getRealDataODP(filename):
             CMi.append(index)
         elif row['unit class'] == "vht":
             VHT.append(index)
-    
+
     data=data.drop(['unit class', 'unit type'], axis=1)
     return data, CM, CMi, VHT
     
