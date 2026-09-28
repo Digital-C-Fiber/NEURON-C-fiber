@@ -18,8 +18,8 @@ from itertools import zip_longest
 #dt: step size in time, if set to zero, CVode is activated
 #previousStim: sets a pre stimulation before the regular stimulation protocol, if the protocol is loaded from file
 def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, tempBranch=32, tempParent=37, 
-        gPump=-0.00858942324175466, gNav17=0.029742297138059308, gNav17Parent=0.059484594276118616, gNav18=0.7813520669995635, gNav18Parent=0.4738723337758157, gNav19=2.0556098191680574e-05, 
-        gKs=0.011778454843702381, gKf=0.02, gH=0.009118507747098268, gKdr=0.001, gKna=0.003513649995404502,vRest=-56.55982576354996,
+        gPump=-0.00859, gNav17=0.02974, gNav17Parent=0.05948, gNav18=0.78135, gNav18Parent=0.47387, gNav19=2.1e-05, 
+        gKs=0.01178, gKf=0.02000, gH=0.00912, gKdr=0.00100, gKna=0.00351,vRest=-56.56,
         sine=False, ampSine=0.1, particleNr=0):
     
     #start timer
@@ -74,31 +74,31 @@ def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, temp
     axon=[0,0,0,0,0,0]
     
     axon[0] = h.Section(name='extra1')
-    axon[0].nseg = round(10*scalingFactor)
+    axon[0].nseg = round(10*scalingFactor*2)
     axon[0].diam = 0.25
     axon[0].L = 100*scalingFactor
     
     axon[1] = h.Section(name='branch')
     axon[1].diam = 0.25
     axon[1].L = 10000*scalingFactor
-    axon[1].nseg = round(400*scalingFactor)
+    axon[1].nseg = round(400*scalingFactor*2)
         
     axon[2] = h.Section(name='branchPoint')
     h.pt3dadd(h.Vector([0,5000*scalingFactor]), h.Vector([0,0]), h.Vector([0,0]), h.Vector([0.25,1]), sec=axon[2])
-    axon[2].nseg = round(100*scalingFactor)
+    axon[2].nseg = round(100*scalingFactor*2)
         
     axon[3] = h.Section(name='parent')
     axon[3].diam = 1
     axon[3].L = 100000*scalingFactor
-    axon[3].nseg = round(10*200*scalingFactor)
+    axon[3].nseg = round(10*200*scalingFactor*2)
         
     axon[4] = h.Section(name='extra2')
-    axon[4].nseg = round(10*scalingFactor)
+    axon[4].nseg = round(10*scalingFactor*2)
     axon[4].diam = 1
     axon[4].L = 100*scalingFactor
     
     axon[5] = h.Section(name='extra3')
-    axon[5].nseg = round(10*scalingFactor)
+    axon[5].nseg = round(10*scalingFactor*2)
     axon[5].diam = 1
     axon[5].L = 100*scalingFactor
     
@@ -447,22 +447,21 @@ def run(prot=1, path="Results", scalingFactor=1,  dt=0, previousStim=False, temp
     j=0
     while(h.t<tstop):
         #save data
+        #save membrane potential
+        '''
+        with open(filename,'a', newline='') as f:
+            csv.writer(f).writerow([h.t, axon[1](0).v, axon[1](0.25).v, axon[1](0.5).v, axon[1](0.75).v, axon[1](1).v, axon[3](0).v, axon[3](0.25).v, axon[3](0.5).v, axon[3](0.75).v, axon[3](1).v])
+            
+        #save concentrations
+        with open(filenameConc,'a', newline='') as f:
+            csv.writer(f).writerow([h.t, axon[3](1).nai, axon[3](1).ki, axon[3](1).nao, axon[3](1).ko, axon[3](1).ena, axon[3](1).ek])
+        '''
         if h.t >= t2:
-            '''
-            #save membrane potential
-            with open(filename,'a', newline='') as f:
-                csv.writer(f).writerow([h.t, axon[1](0).v, axon[1](0.25).v, axon[1](0.5).v, axon[1](0.75).v, axon[1](1).v, axon[3](0).v, axon[3](0.25).v, axon[3](0.5).v, axon[3](0.75).v, axon[3](1).v])
-                
-            #save concentrations
-            with open(filenameConc,'a', newline='') as f:
-                csv.writer(f).writerow([h.t, axon[3](1).nai, axon[3](1).ki, axon[3](1).nao, axon[3](1).ko, axon[3](1).ena, axon[3](1).ek])
-            '''
             t2=h.t+300
             j=j+1
             if j>=10:
                 print(h.t)
                 j=0
-            
         #step 
         h.fadvance()
    

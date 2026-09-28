@@ -23,7 +23,8 @@ def setStimulationProtocol(axon, prot, previousStim=False):
         delay = 5000
     elif prot == 1:#single pulse after 2 ms
         vec = [1000]
-        delay = 10000
+        #delay = 10000
+        delay = 2500
     elif prot == 2:#Protocol from Barbara
         vec, delay = getStimProt()
     elif prot == 3:#High frequency protocol from Tigerholm
@@ -269,9 +270,10 @@ def setStimulationProtocol(axon, prot, previousStim=False):
         #20 pulses at 0.25 Hz -> one pulse every 4 seconds
         #to stabilize latency
         offset=0
-        for i in range(1,21):
+        pulseNr=20
+        for i in range(1,pulseNr+1):#for CM and VHT: 20 pulses, for CMi: 40 pulses
             vec.append(offset+i*4000)
-        lastPulse=offset+20*4000
+        lastPulse=offset+pulseNr*4000
         extras=[2000, 1000, 500, 250, 150, 100, 50, 40, 30, 20, 15]#distance to next regular puls
         numReg=5#number of regular pulses
         for e in extras:
@@ -286,9 +288,10 @@ def setStimulationProtocol(axon, prot, previousStim=False):
         #x pulses at y Hz -> one pulse every 4 seconds
         #to stabilize latency
         offset=0
-        for i in range(1,151):
+        pulseNr=80
+        for i in range(1,pulseNr+1):
             vec.append(offset+i*2000)
-        lastPulse=offset+150*2000
+        lastPulse=offset+pulseNr*2000
         extras=[1000, 500, 250, 150, 100, 50, 40, 30, 20, 15]#distance to next regular puls
         numReg=5#number of regular pulses
         for e in extras:
@@ -298,6 +301,42 @@ def setStimulationProtocol(axon, prot, previousStim=False):
             for i in range(1,numReg+1):
                 vec.append(lastPulse+i*2000)
             lastPulse=lastPulse+numReg*2000
+        delay=lastPulse+1000
+    elif prot=="DP3":#old Doppelpuls, different background frequency
+        #x pulses at y Hz -> one pulse every 4 seconds
+        #to stabilize latency
+        offset=0
+        pulseNr=160
+        for i in range(1,pulseNr+1):
+            vec.append(offset+i*1000)
+        lastPulse=offset+pulseNr*1000
+        extras=[500, 250, 150, 100, 50, 40, 30, 20, 15]#distance to next regular puls
+        numReg=5#number of regular pulses
+        for e in extras:
+            #one extra pulse
+            vec.append(lastPulse+1000-e)
+            #regular pulses
+            for i in range(1,numReg+1):
+                vec.append(lastPulse+i*1000)
+            lastPulse=lastPulse+numReg*1000
+        delay=lastPulse+1000
+    elif prot=="DP4":#old Doppelpuls, different background frequency
+        #x pulses at y Hz -> one pulse every 4 seconds
+        #to stabilize latency
+        offset=0
+        pulseNr=240
+        for i in range(1,pulseNr+1):
+            vec.append(offset+i*500)
+        lastPulse=offset+pulseNr*500
+        extras=[250, 150, 100, 50, 40, 30, 20, 15]#distance to next regular puls
+        numReg=5#number of regular pulses
+        for e in extras:
+            #one extra pulse
+            vec.append(lastPulse+500-e)
+            #regular pulses
+            for i in range(1,numReg+1):
+                vec.append(lastPulse+i*500)
+            lastPulse=lastPulse+numReg*500
         delay=lastPulse+1000
     elif prot=="DPNew":#neues Doppelpulsprotokoll, Weidner, 50ms       
         numberOfPulses=50
@@ -312,6 +351,13 @@ def setStimulationProtocol(axon, prot, previousStim=False):
             vec.append(i*500)
             vec.append(i*500+30)
         lastPulse=numberOfPulses*500+30
+        delay=lastPulse+1000
+    elif prot=="DPNew_30_0.5Hz":#neues Doppelpulsprotokoll, Weidner, 30ms , backgroung frequency 0.5Hz      
+        numberOfPulses=50
+        for i in range(1,numberOfPulses+1):
+            vec.append(i*2000)
+            vec.append(i*2000+30)
+        lastPulse=numberOfPulses*2000+30
         delay=lastPulse+1000
     elif prot=="FF_5Hz":#following frequency - 5Hz
         offset=100
@@ -385,7 +431,7 @@ def setStimulationProtocol(axon, prot, previousStim=False):
         offset=100
         numbersRepetition=1
         for j in range(numbersRepetition):
-            numberOfPulses=25
+            numberOfPulses=20
             for i in range(numberOfPulses):
                 vec.append(offset+i*10)
             lastPulse=offset+(numberOfPulses-1)*10
@@ -551,10 +597,15 @@ def setStimulationProtocol(axon, prot, previousStim=False):
         #like MNG
         i.dur = 0.5 # ms
         #i.amp = 0.1 # nA: threshold for model with sacling=0.1: 0.05nA, stim:0.1nA
-        #i.amp = 0.075 # to make APs more likely to fail
-        i.amp=0.08
+        i.amp = 0.075 # to make APs more likely to fail
+        
+        #i.amp=0.08 #used for short model
+        
         #i.amp = 0.14 # nA: threshold for model with sacling=0.5: 0.07nA, stim: 0.14nA
         #i.amp = 0.18 # nA: threshold for model with sacling=1: 0.09nA, stim: 0.18nA
+        
+        #i.amp = 0.17
+        #i.amp = 0.135 #used for long model
         
         #working
         #i.dur = 5 # ms 
