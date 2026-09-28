@@ -18,8 +18,8 @@ from stimulationProtocols import *
 #dt: step size in time, if set to zero, CVode is activated
 #previousStim: sets a pre stimulation before the regular stimulation protocol, if the protocol is loaded from file
 def run(prot=1, path="Results/", scalingFactor=1,  dt=0, previousStim=False, tempBranch=32, tempParent=37, 
-        gPump=-0.0047891*0.7, gNav17=0.10664, gNav18=0.24271, gNav19=9.4779e-05*20, 
-        gKs=0.0069733, gKf=0.012756, gH=0.0025377, gKdr=0.018002*1.2, gKna=0.00042*1.8,vRest=-55,
+        gPump=-0.00335, gNav17=0.10664, gNav18=0.24271, gNav19=0.00189, 
+        gKs=0.0069733, gKf=0.012756, gH=0.0025377, gKdr=0.02160, gKna=0.00076,vRest=-55,
         sine=False, ampSine=0.1):
     
     #start timer
