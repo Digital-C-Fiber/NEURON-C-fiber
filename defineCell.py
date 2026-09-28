@@ -34,9 +34,11 @@ def insertChannels(axon,condFactor, gPump=-0.0047891, gNav17=0.10664, gNav18=0.2
         seg.kna.gbar = gKna*condFactor
         
     #h.theta_nakdyn = 0.029#Tigerholm
-    h.theta_nakdyn = 0.0435
-    #h.theta_nakdyn = 0.058
-    #h.theta_nakdyn = 1
+    #h.theta_nakdyn = 0.035
+    print("theta="+str(0.0435))
+    h.theta_nakdyn = 0.0435#new CM
+    #h.theta_nakdyn = 0.06
+
     #h.theta_naoi = 0.029*condFactor#Grill
     #h.theta_koi = 0.029*condFactor#Grill
 
@@ -51,7 +53,7 @@ def setTemp(axon, tempCelsius):
         seg.kdr.celsiusT = tempCelsius#Tigerholm
         #seg.kdrTiger.celsiusT = tempCelsius#Grill
         #seg.nakdyn.celsiusT=tempCelsius
-    h.celsiusT_nav1p8 = tempCelsius
+        seg.nav1p8.celsiusT = tempCelsius
 
 #calculates the maximum conductances of the sodium and potassium leak (balancing) currents to achieve their target rest potential (Grill)
 def balance(axon, Vrest):
